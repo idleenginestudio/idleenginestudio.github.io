@@ -21,3 +21,4 @@ h3{font-size:1rem;margin:20px 0 4px}p,li{margin:6px 0}ul{padding-left:1.3em}
 .gb{padding:12px 16px 16px}.gb h3{margin:2px 0 6px;font-size:1.15rem}.gb h3 span{display:block;font-size:.9rem;font-weight:400;color:var(--mute)}
 .st{font-size:.8rem;color:var(--accent);margin:0}.en-d{color:var(--mute);font-size:.92rem}.wh{font-size:.85rem;color:var(--mute);margin-top:8px}
 @media (min-width:640px){.games{grid-template-columns:1fr 1fr}.game:first-child{grid-column:1/-1}}
+.brand{display:flex;align-items:center;gap:14px}.brand img{width:72px;height:72px;border-radius:16px;flex:none}
