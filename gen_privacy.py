@@ -29,7 +29,8 @@ def page(title, body):
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{html.escape(title)}</title>
-<link rel="stylesheet" href="../style.css">\n<link rel="icon" type="image/png" href="/img/favicon-32.png">
+<link rel="stylesheet" href="../style.css">
+<link rel="icon" type="image/png" href="/img/favicon-32.png">
 </head>
 <body><main>
 {body}
@@ -212,6 +213,7 @@ index = f"""<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>隱私權政策 · Privacy Policies</title>
 <link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/png" href="/img/favicon-32.png">
 </head>
 <body><main>
 <h1>隱私權政策</h1>
