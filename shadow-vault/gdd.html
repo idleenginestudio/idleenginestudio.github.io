@@ -89,6 +89,16 @@ em{color:#c9c4b8}
 <li><strong>Breaking the mirror on purpose.</strong> In the Master Vault, the puzzle is longer than the multiplier, so the number must be <strong>cut</strong> and the halves no longer line up. The player has to work out where the symmetry breaks and repair it by hand: one less here, one more there.</li>
 </ul>
 <p>The theme is not decoration added on top. It is the rule the player has to discover to win.</p>
+<h3>The math behind it</h3>
+<p>Multiplying by a row of nines is a subtraction in disguise. For a two-digit N:</p>
+<blockquote>
+<p>N × 99 = N × 100 − N = (N − 1) × 100 + (100 − N)</p>
+</blockquote>
+<ul>
+<li>The left part, <strong>N − 1</strong>, is the front half: the puzzle minus one dot.</li>
+<li>The right part, <strong>100 − N = 99 − (N − 1)</strong>, takes each digit of the front away from 9. That is the front's empty space, its shadow.</li>
+</ul>
+<p>The same holds for ×9 and ×999 with one or three slots. In the Master Vault, N has more digits than the nines, so the shifted number and the subtraction overlap. Cut N into a left part and a right part (as many digits as the nines): the front becomes <strong>N − left − 1</strong> and the back becomes <strong>10^k − right</strong>. Example: 1234 × 99 → front 1234 − 12 − 1 = 1221, back 100 − 34 = 66 → 122166. Every puzzle the game generates was checked against N × (10^k − 1).</p>
 <hr />
 <h2>3. Core Gameplay</h2>
 <h3>Core loop</h3>
@@ -154,7 +164,7 @@ em{color:#c9c4b8}
 <li>Each level has 8 questions and 3 hearts. Hearts left at the end become stars (up to 3).</li>
 <li>Clearing a level unlocks the next one.</li>
 <li>Every level opens with a short <strong>animated tutorial</strong> that shows the trick with dots. It can be replayed from the map.</li>
-<li><strong>Lantern hints</strong> reveal the answer for the currently selected block (2 per level, 3 in Endless).</li>
+<li><strong>Bulb hints</strong> reveal the answer for the currently selected block (2 per level, 3 in Endless).</li>
 </ul>
 <hr />
 <h2>4. Controls</h2>
