@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shadow Vault — Game Design Document</title>
+<meta name="description" content="Game Design Document for Shadow Vault, a no-digits mental-math puzzle by Idle Engine Studio. Game Jam 2026 AD entry, theme: Imperfect Symmetry.">
+<style>
+:root{color-scheme:dark}
+body{margin:0;background:#161616;color:#f2efe8;font:17px/1.65 -apple-system,"Segoe UI",Roboto,"Noto Sans TC",sans-serif}
+main{max-width:820px;margin:0 auto;padding:40px 20px 80px}
+h1{font-size:34px;line-height:1.2;margin:0 0 8px;color:#f0b020}
+h2{font-size:24px;margin:44px 0 12px;color:#f0b020;border-bottom:1px solid #333;padding-bottom:6px}
+h3{font-size:19px;margin:28px 0 8px}
+a{color:#f0b020}
+hr{border:0;border-top:1px solid #2c2c2e;margin:32px 0}
+blockquote{margin:16px 0;padding:10px 16px;border-left:4px solid #f0b020;background:#202022}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:15px;display:block;overflow-x:auto}
+th,td{border:1px solid #333;padding:8px 10px;text-align:left;vertical-align:top}
+th{background:#202022}
+em{color:#c9c4b8}
+.top{font-size:14px;margin-bottom:28px}
+</style>
+</head>
+<body>
+<main>
+<p class="top"><a href="https://idleenginestudio.github.io/">Idle Engine Studio</a> · <a href="https://idleenginestudio.itch.io/shadow-vault">Play Shadow Vault on itch.io</a></p>
+<h1>Shadow Vault — Game Design Document</h1>
+<p><em>Idle Engine Studio · Game Jam 2026 AD entry · Theme: Imperfect Symmetry</em>
+<em>Version 1.1 · 2026-11-02 (art pass)</em></p>
+<hr />
+<h2>1. Overview</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Title</strong></td>
+<td>Shadow Vault（影子保險箱）</td>
+</tr>
+<tr>
+<td><strong>Genre</strong></td>
+<td>Puzzle / mental-math arcade</td>
+</tr>
+<tr>
+<td><strong>Platform</strong></td>
+<td>Web browser (HTML5), desktop and mobile; playable on itch.io</td>
+</tr>
+<tr>
+<td><strong>Controls</strong></td>
+<td>Touch or mouse; full keyboard support</td>
+</tr>
+<tr>
+<td><strong>Languages</strong></td>
+<td>English, Traditional Chinese (switchable in game)</td>
+</tr>
+<tr>
+<td><strong>Session length</strong></td>
+<td>2–5 minutes per level; Endless Hall as long as you survive</td>
+</tr>
+<tr>
+<td><strong>Target audience</strong></td>
+<td>Puzzle fans and curious learners aged 10+, players who like "aha" tricks more than drills</td>
+</tr>
+<tr>
+<td><strong>Team</strong></td>
+<td>Idle Engine Studio (solo developer, AI-assisted)</td>
+</tr>
+</tbody>
+</table>
+<h3>One-line pitch</h3>
+<p>A vault-cracking math game with <strong>no digits on screen</strong>: numbers are shown only as dot patterns, and every combination is the "shadow" of the puzzle, a near-mirror that is never quite symmetric.</p>
+<h3>Concept</h3>
+<p>Multiplying by 9, 99 or 999 has a famous shortcut. Take one away from the number and write that as the front half. For the back half, write each digit's gap to 9:</p>
+<blockquote>
+<p>47 × 99 → front <strong>46</strong>, back <strong>53</strong> → <strong>4653</strong></p>
+</blockquote>
+<p>Most games would show this as a formula. Shadow Vault instead <strong>turns the trick into the picture</strong>. Each digit is a 3×3 block of dots, and the back half of the answer is literally the <strong>empty space (the shadow)</strong> of the front half. Put a front block and its back block together and the grid is exactly full. The player learns the trick by seeing it, not by reading it.</p>
+<hr />
+<h2>2. Theme: Imperfect Symmetry</h2>
+<p>The whole game is built on one shape that is <em>almost</em> symmetric.</p>
+<ul>
+<li><strong>Mirror, with a missing piece.</strong> The vault's front half and back half are opposites. Every lit dot in front matches an empty dot behind, so the pairs fill the grid perfectly. But the front half is not the puzzle itself; it is the puzzle <strong>minus one dot</strong>. That one missing dot is what breaks the symmetry, and it is the key to every lock.</li>
+<li><strong>The shadow is the answer.</strong> Light and shadow, filled and empty, front and back: the answer is always the puzzle's negative image, shifted by one.</li>
+<li><strong>Breaking the mirror on purpose.</strong> In the Master Vault, the puzzle is longer than the multiplier, so the number must be <strong>cut</strong> and the halves no longer line up. The player has to work out where the symmetry breaks and repair it by hand: one less here, one more there.</li>
+</ul>
+<p>The theme is not decoration added on top. It is the rule the player has to discover to win.</p>
+<hr />
+<h2>3. Core Gameplay</h2>
+<h3>Core loop</h3>
+<ol>
+<li><strong>Read</strong> the puzzle: dot blocks × full blocks (1 full block = ×9, 2 = ×99, 3 = ×999).</li>
+<li><strong>Think</strong> in your head, because no digits are ever shown.</li>
+<li><strong>Dial</strong> the answer: select a block on the vault door and place dots on the dot keypad.</li>
+<li><strong>Unlock</strong> before the fuse burns out, then go to the next lock.</li>
+</ol>
+<h3>Rules</h3>
+<ul>
+<li><strong>Numbers = dot blocks.</strong> A 3×3 block with <em>n</em> dots lit means the digit <em>n</em>; an empty block means zero.</li>
+<li><strong>Front (gold)</strong> = puzzle minus one.</li>
+<li><strong>Back (cyan)</strong> = the shadow of the front: each block's empty dots.</li>
+<li><strong>Big numbers (Master Vault):</strong> cut the puzzle so the right part has as many blocks as the full blocks.</li>
+<li>Front = puzzle − left part − 1</li>
+<li>Back = shadow of the right part + 1</li>
+<li><strong>Mistakes:</strong> a wrong answer or a timeout costs a heart. The game then shows the correct vault, marks the wrong blocks, and repeats the unlocking rule.</li>
+</ul>
+<h3>Levels and progression</h3>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Puzzle</th>
+<th>Fuse per question</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bronze Lock</td>
+<td>one-digit × 9</td>
+<td>15 s</td>
+</tr>
+<tr>
+<td>Silver Lock</td>
+<td>one-digit × 99</td>
+<td>18 s</td>
+</tr>
+<tr>
+<td>Gold Lock</td>
+<td>two-digit × 99</td>
+<td>24 s</td>
+</tr>
+<tr>
+<td>Treasury</td>
+<td>one- to three-digit × 999</td>
+<td>30 s</td>
+</tr>
+<tr>
+<td>Master Vault</td>
+<td>longer than the multiplier, must be cut</td>
+<td>45 s</td>
+</tr>
+<tr>
+<td>Endless Hall</td>
+<td>all lock types mixed, fuse keeps getting shorter (down to 60%)</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Each level has 8 questions and 3 hearts. Hearts left at the end become stars (up to 3).</li>
+<li>Clearing a level unlocks the next one.</li>
+<li>Every level opens with a short <strong>animated tutorial</strong> that shows the trick with dots. It can be replayed from the map.</li>
+<li><strong>Lantern hints</strong> reveal the answer for the currently selected block (2 per level, 3 in Endless).</li>
+</ul>
+<hr />
+<h2>4. Controls</h2>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Touch / mouse</th>
+<th>Keyboard</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Select a vault block</td>
+<td>Tap the block</td>
+<td>← / →</td>
+</tr>
+<tr>
+<td>Place dots</td>
+<td>Tap the dot keypad</td>
+<td>0–9</td>
+</tr>
+<tr>
+<td>Clear a block</td>
+<td>Clear button</td>
+<td>Backspace</td>
+</tr>
+<tr>
+<td>Unlock</td>
+<td>✓ button</td>
+<td>Enter</td>
+</tr>
+<tr>
+<td>Next tutorial page / continue</td>
+<td>Tap</td>
+<td>Enter / Space</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>5. The No-Digit Rule (UI Design)</h2>
+<p>The game's biggest design constraint is that <strong>no numerals appear anywhere</strong>: no Arabic digits and no Chinese number characters. Every counter is a picture instead.</p>
+<table>
+<thead>
+<tr>
+<th>Information</th>
+<th>Shown as</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Time left</td>
+<td>A burning fuse</td>
+</tr>
+<tr>
+<td>Lives</td>
+<td>Hearts</td>
+</tr>
+<tr>
+<td>Question progress</td>
+<td>A row of small padlocks</td>
+</tr>
+<tr>
+<td>Combo</td>
+<td>Flames</td>
+</tr>
+<tr>
+<td>Endless score</td>
+<td>Gems (1 big gem = 10 small gems)</td>
+</tr>
+<tr>
+<td>Star rating</td>
+<td>Stars</td>
+</tr>
+</tbody>
+</table>
+<p>Even the interface text avoids number words, so the player is always the one turning pictures into numbers.</p>
+<hr />
+<h2>6. Art Direction</h2>
+<ul>
+<li><strong>Soft clay toy</strong> look: a mint background, chunky pastel cards and buttons with a pressed-clay shine, and a yellow toy safe with little feet.</li>
+<li>Each digit block is a chocolate tray of candy dots. The front half uses orange candies on a pink panel and the back half uses mint candies on a mint panel, so "light vs. shadow" reads as two flavors of the same tray.</li>
+<li>Lock tiers keep their material colors (bronze, silver, gold, jade, ruby) on flower-shaped clay badges.</li>
+<li>The timer is a rope fuse with a spark; hints come from a glowing bulb.</li>
+<li>Font: Huninn, a rounded Traditional Chinese typeface that also covers Latin.</li>
+<li>Every visual is drawn in code (CSS/SVG), so it stays sharp on any screen and the build stays small.</li>
+<li>The style was chosen on 2026-11-02 from five concept directions: brass vault, neon vault, Chinese puzzle box, soft clay toy and paper-cut shadows.</li>
+<li>Mobile-first layout, tested at 360×740 and 390×844.</li>
+</ul>
+<hr />
+<h2>7. Audio</h2>
+<p>All sound effects are <strong>synthesized live with Web Audio</strong>: dot taps, unlock chimes, a jammed-lock buzz, fuse warning ticks, and combo flourishes. No audio files are used. A mute toggle is always available.</p>
+<hr />
+<h2>8. Technical Details</h2>
+<ul>
+<li>A single self-contained HTML file (about 130 KB) with an embedded, subsetted font. There are no external requests.</li>
+<li>Progress and settings are saved in the browser (localStorage).</li>
+<li>Puzzle generation was verified by test: 20,000 random questions across all five levels, each answer equal to N × (10^k − 1).</li>
+</ul>
+<hr />
+<h2>9. Scope and Schedule</h2>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Milestone</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2026-11-01</td>
+<td>Playable prototype: all 5 levels, Endless Hall, tutorials</td>
+</tr>
+<tr>
+<td>2026-11-02</td>
+<td>English localization, embedded font, credits; GDD; art pass (soft clay toy)</td>
+</tr>
+<tr>
+<td>2026-11-03 – 11-06</td>
+<td>Difficulty tuning, playtesting</td>
+</tr>
+<tr>
+<td>By 2026-11-07</td>
+<td>itch.io page and submission</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Possible future work:</strong> a gentler starter level, an untimed practice mode, easier-to-read dot patterns, and more tricks (×11, squaring numbers ending in 5).</p>
+<hr />
+<h2>10. AI Use Disclosure</h2>
+<p>Game design, code and text were co-created by the developer with AI (Anthropic Claude). All visuals in the game are drawn with CSS/SVG and all sound is synthesized with Web Audio; no AI-generated images or audio are used in the game. The art direction was picked from five concept images generated with ChatGPT, and the chosen style was then redrawn in code.</p>
+<h2>11. Credits</h2>
+<ul>
+<li><strong>Idle Engine Studio</strong>: design, development</li>
+<li><strong>Font</strong>: Huninn, © 2025 The Huninn Project Authors (justfont), SIL Open Font License 1.1</li>
+</ul>
+</main>
+</body>
+</html>
