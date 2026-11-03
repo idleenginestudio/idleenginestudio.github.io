@@ -198,6 +198,33 @@ APPS.append(dict(
 <p>There is no sign-up or login. Settings are stored only on your device.</p>
 """ + en_ads('a rewarded ad only when you tap "update data manually" in Settings; the update runs after the ad, and there are no ads anywhere else.') + en_common_tail(' and our signal server') + "</section>"))
 
+APPS.append(dict(
+    slug='sweetie-nim', zh='Sweetie Nim', en='Sweetie Nim',
+    desc='糖果屋主題的拿取策略益智遊戲（Android、網頁）',
+    body=head('Sweetie Nim', 'Sweetie Nim') + f"""<section id="zh">
+<p>{DEV}（以下稱「我們」）開發的《Sweetie Nim》有 Android App 和網頁版。這份政策說明各版本會處理哪些資料。</p>
+<h2>我們自己不收集個人資料</h2>
+<p>遊戲不需要註冊或登入。關卡進度、每日一題的紀錄、連續天數和設定只存在你的裝置（瀏覽器或 App 的本機儲存空間）裡，不會傳到我們的伺服器。刪除 App 或清除瀏覽器資料就會一起刪除。</p>
+<h2>每日提醒通知（Android）</h2>
+<p>如果你開啟每日提醒，App 會在你的裝置上排定本機通知，提醒你玩每日一題。通知完全在裝置上產生，不經過我們的伺服器；你可以在遊戲設定或 Android 的通知設定中關閉。</p>
+<h2>分享</h2>
+<p>按下分享時，App 會把你的成績文字交給系統的分享功能或複製到剪貼簿，由你決定要分享到哪裡。我們不會收到這些內容。</p>
+<h2>網頁版</h2>
+<p>網頁版放在 GitHub Pages（idleenginestudio.github.io），沒有廣告，我們不收集資料。GitHub 為了提供網站服務可能會記錄 IP 位址等連線資訊，請參考 GitHub 的隱私權政策。</p>
+""" + zh_ads('底部橫幅廣告，以及每過幾關之間偶爾出現的插頁廣告（前幾關和每日一題不會出現）') + zh_common_tail() + f"""</section>
+<section id="en" class="en">
+<h2>English</h2>
+<p>Sweetie Nim by {DEV} ("we") comes as an Android app and a web version. This policy explains what data each one handles.</p>
+<h3>We collect no personal data ourselves</h3>
+<p>There is no sign-up or login. Progress, daily-puzzle records, streaks and settings are stored only on your device (the browser's or the app's local storage) and never sent to our servers. Uninstalling the app or clearing browser data deletes them.</p>
+<h3>Daily reminder notifications (Android)</h3>
+<p>If you turn on daily reminders, the app schedules local notifications on your device. They are created entirely on the device and never pass through our servers; you can turn them off in the game's settings or in Android's notification settings.</p>
+<h3>Sharing</h3>
+<p>When you tap Share, the app hands your result text to the system share sheet or copies it to the clipboard, and you choose where it goes. We never receive it.</p>
+<h3>Web version</h3>
+<p>The web version is hosted on GitHub Pages (idleenginestudio.github.io), has no ads, and we collect no data. GitHub may log connection information such as your IP address to provide the site; see GitHub's privacy statement.</p>
+""" + en_ads('a bottom banner ad and an occasional interstitial ad between levels (never in the first levels or the daily puzzle)') + en_common_tail() + "</section>"))
+
 # ---------------------------------------------------------------- write
 os.makedirs(OUT, exist_ok=True)
 open(os.path.join(OUT, 'style.css'), 'w').write(CSS)

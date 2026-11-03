@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f7c6d6">
+  <meta name="description" content="Sweetie Nim：沿橫、直或 45° 斜線，每回合拿走 1–3 顆甜甜圈。拿走最後一顆贏，或拿走最後一顆輸。">
+  <title>Sweetie Nim</title>
+  <link rel="icon" type="image/webp" href="/sweetie-nim/assets/candy/donut.webp">
+  <script type="module" crossorigin src="/sweetie-nim/assets/index-Gop3HDep.js"></script>
+  <link rel="stylesheet" crossorigin href="/sweetie-nim/assets/index-CWcKMFu8.css">
+</head>
+<body>
+<main class="page">
+  <img class="decor decor-jar" src="/sweetie-nim/assets/candy/jar.webp" alt="" aria-hidden="true">
+  <img class="decor decor-lollipop" src="/sweetie-nim/assets/candy/lollipop.webp" alt="" aria-hidden="true">
+  <img class="decor decor-gingerbread" src="/sweetie-nim/assets/candy/gingerbread.webp" alt="" aria-hidden="true">
+  <img class="decor decor-wrapped" src="/sweetie-nim/assets/candy/wrapped.webp" alt="" aria-hidden="true">
+
+  <header class="topbar">
+    <h1 class="wordmark"><img src="/sweetie-nim/assets/candy/logo.webp" alt="Sweetie Nim" width="900" height="300"></h1>
+    <nav class="topbar-actions">
+      <button id="levels-button" class="pill" aria-haspopup="dialog"><img class="pill-icon" src="/sweetie-nim/assets/candy/icon-star.webp" alt=""><span class="pill-text"><span data-i18n="btn.levels">關卡</span> <span id="progress">01 / 10</span></span></button>
+      <button id="math-button" class="pill" aria-pressed="false"><img class="pill-icon" src="/sweetie-nim/assets/candy/icon-calc.webp" alt=""><span class="pill-text"><span data-i18n="btn.math">數學</span> <kbd>D</kbd></span></button>
+      <button id="sound-button" class="pill" aria-pressed="true"><img class="pill-icon when-on" src="/sweetie-nim/assets/candy/icon-note.webp" alt=""><img class="pill-icon when-off" src="/sweetie-nim/assets/candy/icon-mute.webp" alt=""><span class="pill-text label">音效 開</span></button>
+      <button id="effects-button" class="pill" aria-pressed="true"><img class="pill-icon" src="/sweetie-nim/assets/candy/icon-play.webp" alt=""><span class="pill-text label">動畫 開</span></button>
+    </nav>
+  </header>
+
+  <div class="layout">
+    <section class="game">
+      <div class="level-card cookie">
+        <div class="card-head"><p id="chapter" class="eyebrow"></p><button id="mode-chip" class="mode-chip" type="button" aria-haspopup="dialog"></button></div>
+        <div class="level-title">
+          <h2><span id="level-number"></span><span id="level-name"></span></h2>
+          <span id="world" class="world"></span>
+        </div>
+        <p id="lesson" class="lesson"></p>
+      </div>
+
+      <div class="mat">
+        <svg id="board" role="application" data-i18n-aria="board.aria" tabindex="0"></svg>
+        <img class="box-bow" src="/sweetie-nim/assets/candy/bow.webp" alt="" aria-hidden="true">
+        <div id="chapter-transition" class="chapter-transition" hidden><span data-i18n="chapter2.small">第二章</span><strong data-i18n="chapter2.big">重力 ↓</strong><span data-i18n="chapter2.text">每一步之後，甜甜圈都會往下掉。</span></div>
+        <div id="burst" class="burst" aria-hidden="true"></div>
+        <div id="coach" class="coach" hidden aria-hidden="true"><span class="coach-finger"></span><span class="coach-text"></span></div>
+      </div>
+
+      <div class="turn-bar"><span id="status" role="status" aria-live="polite"></span><span id="piece-count"></span></div>
+      <p id="verdict" class="verdict" hidden></p>
+
+      <div id="outcome" class="outcome cookie" hidden>
+        <img class="outcome-trophy" src="/sweetie-nim/assets/candy/trophy.webp" alt="" aria-hidden="true">
+        <p id="outcome-stars" class="stars" hidden></p>
+        <p id="outcome-text"></p>
+        <p id="outcome-tip" class="small" hidden></p>
+        <div class="outcome-actions"><button id="next-button" class="button jelly pink">下一關 →</button><button id="share-button" class="button jelly blue" hidden data-i18n="btn.share">分享成績</button><button id="remind-prompt" class="button" hidden data-i18n="remind.prompt">每天提醒我</button><button id="analyze-button" class="button" data-i18n="btn.analyze">回合紀錄</button></div>
+      </div>
+      <div class="controls">
+        <button id="restart-button" class="button jelly pink"><img class="button-icon" src="/sweetie-nim/assets/candy/icon-restart.webp" alt=""><span data-i18n="btn.restart">重新開始</span></button>
+        <button id="hint-button" class="button jelly blue" aria-expanded="false"><img class="button-icon" src="/sweetie-nim/assets/candy/icon-bulb.webp" alt=""><span data-i18n="btn.hint">提示</span></button>
+      </div>
+      <p id="hint" class="hint" hidden></p>
+
+      <section id="math" class="card cookie math" hidden><h2 class="eyebrow" data-i18n="math.title">數學 · 本機解題器</h2><pre id="math-data"></pre></section>
+      <section id="analysis" class="card cookie analysis" hidden><h2 class="eyebrow" data-i18n="analysis.title">回合紀錄</h2><p class="small" data-i18n="analysis.legend">N = 輪到這一方可以必勝 · P = 輪到這一方必敗</p><ol id="trace"></ol></section>
+    </section>
+
+    <aside class="side">
+      <details id="rules" class="card cookie rules">
+        <summary data-open="收合 ▴" data-closed="展開 ▾"><span class="summary-title"><img src="/sweetie-nim/assets/candy/icon-book.webp" alt="" aria-hidden="true"><span data-i18n="rules.title">規則</span></span></summary>
+        <ol class="rule-list">
+          <li data-i18n-html="rules.1">兩人輪流，每回合拿走 <b>1–3 顆</b>相鄰的甜甜圈。</li>
+          <li data-i18n-html="rules.2">必須在同一條直線上：<b>橫、直或 45° 斜</b>。不能跳過空格，也不能轉彎。</li>
+          <li id="rule-win">拿走<b>最後一顆</b>的人獲勝。</li>
+          <li data-i18n-html="rules.4">重力盤面：每一步之後，上方的甜甜圈會直直落下。</li>
+        </ol>
+      </details>
+      <section class="card cookie progress-card">
+        <div class="progress-head"><span class="eyebrow" data-i18n="progress.title">闖關進度</span><span id="completed-count" class="small">00 / 10 完成</span></div>
+        <div id="mission-track" class="mission-track"></div>
+        <p class="small" data-i18n="progress.chapters">第一章 01–05 靜態 · 第二章 06–10 重力</p>
+      </section>
+    </aside>
+  </div>
+  <footer class="footer"><span data-i18n="footer.text">對手是本機解題器：沒有運氣，只有策略。</span> <span class="credit" data-i18n="footer.music">音樂</span> <button id="lang-button" class="link-button lang" type="button" lang="en">English</button> <button id="privacy-button" class="link-button privacy" type="button" data-i18n="footer.privacy">隱私設定</button></footer>
+</main>
+<dialog id="level-dialog" data-i18n-aria="menu.title">
+  <div class="dialog-heading"><h2 data-i18n="menu.rule">規則</h2><button id="close-levels" class="icon-button" data-i18n-aria="menu.close">×</button></div>
+  <div class="mode-picker" role="radiogroup">
+    <button id="mode-normal" class="mode-card" role="radio" data-mode="normal"><img src="/sweetie-nim/assets/candy/trophy.webp" alt=""><span class="mode-name" data-i18n-html="mode.normal.name">拿最後一顆<b>贏</b></span><span class="mode-rule" data-i18n="mode.normal.rule">把最後一顆搶到手</span><span class="mode-progress"></span></button>
+    <button id="mode-misere" class="mode-card" role="radio" data-mode="misere"><img src="/sweetie-nim/assets/candy/gingerbread.webp" alt=""><span class="mode-name" data-i18n-html="mode.misere.name">拿最後一顆<b>輸</b></span><span class="mode-rule" data-i18n="mode.misere.rule">把最後一顆留給電腦</span><span class="mode-progress"></span></button>
+  </div>
+  <h2 class="dialog-subheading" data-i18n="menu.play">玩法</h2>
+  <div class="play-tabs" role="tablist">
+    <button class="play-tab" role="tab" data-play="campaign"><img src="/sweetie-nim/assets/candy/icon-star.webp" alt=""><span data-i18n="play.campaign">闖關</span></button>
+    <button class="play-tab" role="tab" data-play="daily"><img src="/sweetie-nim/assets/candy/icon-bulb.webp" alt=""><span data-i18n="play.daily">每日一題</span></button>
+    <button class="play-tab" role="tab" data-play="endless"><img src="/sweetie-nim/assets/candy/jar.webp" alt=""><span data-i18n="play.endless">無限挑戰</span></button>
+    <button class="play-tab" role="tab" data-play="duo"><img src="/sweetie-nim/assets/candy/bow.webp" alt=""><span data-i18n="play.duo">雙人對戰</span></button>
+  </div>
+  <section class="play-panel" data-panel="campaign" role="tabpanel">
+    <p class="small"><span data-i18n="play.campaign.desc">10 關教學關卡</span> · <span data-i18n="progress.chapters">第一章 01–05 靜態 · 第二章 06–10 重力</span></p>
+    <div id="level-list"></div>
+  </section>
+  <section class="play-panel" data-panel="daily" role="tabpanel" hidden>
+    <p class="small" data-i18n="play.daily.desc">每天一題，大家同一題</p>
+    <p id="daily-status" class="panel-status"></p>
+    <button id="daily-button" class="button jelly pink wide">開始今天的題目</button>
+    <button id="daily-share" class="button jelly blue wide" hidden data-i18n="daily.share">分享今天的成績</button>
+  </section>
+  <section class="play-panel" data-panel="endless" role="tabpanel" hidden>
+    <p class="small" data-i18n="play.endless.desc">電腦出題，玩不完</p>
+    <div class="choice-row">
+      <button class="button choice" data-endless="easy"><span data-i18n="diff.easy">簡單</span><small></small></button>
+      <button class="button choice" data-endless="normal"><span data-i18n="diff.normal">普通</span><small></small></button>
+      <button class="button choice" data-endless="hard"><span data-i18n="diff.hard">困難</span><small></small></button>
+    </div>
+  </section>
+  <section class="play-panel" data-panel="duo" role="tabpanel" hidden>
+    <p class="small"><span data-i18n="play.duo.desc">兩人輪流用同一支手機</span> · <span data-i18n="duo.note">每局隨機出盤面，靜態或重力。</span></p>
+    <div class="choice-row">
+      <button class="button choice" data-duo="small" data-i18n="duo.small">小盤</button>
+      <button class="button choice" data-duo="medium" data-i18n="duo.medium">中盤</button>
+      <button class="button choice" data-duo="large" data-i18n="duo.large">大盤</button>
+    </div>
+  </section>
+  <h2 class="dialog-subheading" data-i18n="menu.settings">設定</h2>
+  <div class="settings-row">
+    <button id="music-button" class="button choice" aria-pressed="true"><img class="button-icon" src="/sweetie-nim/assets/candy/icon-note.webp" alt=""><span class="label">音樂 開</span></button>
+    <button id="menu-lang-button" class="button choice" type="button">English</button>
+  </div>
+  <div class="settings-row native-only">
+    <button id="remind-button" class="button choice" aria-pressed="false"><span class="label">每日提醒 關</span></button>
+    <label class="time-field"><span data-i18n="remind.time">提醒時間</span><input id="remind-time" type="time" value="20:00"></label>
+  </div>
+  <p class="small" data-i18n="settings.note">上方的「音效」按鈕會一起關掉音樂。</p>
+</dialog>
+<div id="toast" class="toast" role="status" hidden></div>
+
+<!-- Start screen: shown on every launch; removed when the player taps Start. -->
+<div id="title-screen" class="title-screen">
+  <div class="title-frame">
+    <img class="title-logo" src="/sweetie-nim/assets/candy/logo.webp" alt="Sweetie Nim" width="900" height="292">
+    <button id="start-button" class="button jelly pink title-start" type="button"><span data-i18n="btn.start">開始遊戲</span></button>
+  </div>
+</div>
+</body>
+</html>
