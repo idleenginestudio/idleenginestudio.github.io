@@ -225,6 +225,29 @@ APPS.append(dict(
 <p>The web version is hosted on GitHub Pages (idleenginestudio.github.io), has no ads, and we collect no data. GitHub may log connection information such as your IP address to provide the site; see GitHub's privacy statement.</p>
 """ + en_ads('a bottom banner ad and an occasional interstitial ad between levels (never in the first levels or the daily puzzle)') + en_common_tail() + "</section>"))
 
+APPS.append(dict(
+    slug='shadow-vault', zh='影子保險箱', en='Shadow Vault',
+    desc='沒有數字的圖像心算解謎遊戲（Android、網頁）',
+    body=head('影子保險箱', 'Shadow Vault') + f"""<section id="zh">
+<p>{DEV}（以下稱「我們」）開發的《影子保險箱》有 Android App 和網頁版。這份政策說明各版本會處理哪些資料。</p>
+<h2>我們自己不收集個人資料</h2>
+<p>遊戲不需要註冊或登入。關卡進度、星星、寶石、道具（燈泡、愛心）和設定只存在你的裝置（瀏覽器或 App 的本機儲存空間）裡，不會傳到我們的伺服器。刪除 App 或清除瀏覽器資料就會一起刪除。</p>
+<h2>寶石</h2>
+<p>Android 版有遊戲內貨幣「寶石」，只能靠過關或看獎勵廣告取得，用來換提示燈泡和愛心。寶石不能用真錢購買，也沒有任何內購；寶石只記錄在你的裝置上，沒有現金價值，不能轉讓或兌換。</p>
+<h2>網頁版</h2>
+<p>網頁版放在 itch.io 和工作室網站（GitHub Pages），沒有廣告，也沒有寶石，我們不收集資料。網站或平台為了提供服務可能會記錄 IP 位址等連線資訊，請參考 itch.io 與 GitHub 的隱私權政策。</p>
+""" + zh_ads('獎勵廣告（由你選擇觀看：提示燈泡用完時多拿一顆、愛心用完時復活、無盡模式接關、結算時寶石加倍）和插頁廣告（離開結算畫面時偶爾出現，最初幾局不會出現，之後最多每 3 局一次）') + zh_common_tail() + f"""</section>
+<section id="en" class="en">
+<h2>English</h2>
+<p>Shadow Vault by {DEV} ("we") comes as an Android app and a web version. This policy explains what data each one handles.</p>
+<h3>We collect no personal data ourselves</h3>
+<p>There is no sign-up or login. Progress, stars, gems, items (bulbs and hearts) and settings are stored only on your device (the browser's or the app's local storage) and never sent to our servers. Uninstalling the app or clearing browser data deletes them.</p>
+<h3>Gems</h3>
+<p>The Android app has an in-game currency, gems, earned only by clearing vaults or watching rewarded ads and spent on hint bulbs and hearts. Gems cannot be bought with real money and there are no in-app purchases; they are stored only on your device, have no cash value and cannot be transferred or redeemed.</p>
+<h3>Web version</h3>
+<p>The web version is hosted on itch.io and the studio site (GitHub Pages). It has no ads and no gems, and we collect no data. The site or portal may log connection information such as your IP address to provide the service; see the itch.io and GitHub privacy policies.</p>
+""" + en_ads('rewarded ads (which you choose to watch: an extra hint bulb when you run out, a revive when your hearts run out, a continue in endless mode, or double gems at the results) and interstitial ads (occasionally when you leave the results screen — never in the first few runs, and at most every 3rd run after that)') + en_common_tail() + "</section>"))
+
 # ---------------------------------------------------------------- write
 os.makedirs(OUT, exist_ok=True)
 open(os.path.join(OUT, 'style.css'), 'w').write(CSS)
